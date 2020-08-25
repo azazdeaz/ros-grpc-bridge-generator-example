@@ -1,0 +1,4 @@
+<launch>
+    <node name="sim" pkg="turtlesim" type="turtlesim_node" />
+    <node name="shapes" pkg="turtle_actionlib" type="shape_server" />
+</launch>
