@@ -1,0 +1,8 @@
+.dockerignore
+build
+devel
+.vscode
+.catkin_tools
+Dockerfile
+run_in_docker
+README.md
