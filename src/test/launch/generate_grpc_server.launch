@@ -1,7 +1,6 @@
 <launch>
-    <node name="gen" pkg="grpc_api_generator" type="generate">
+    <node name="gen" pkg="grpc_bridge_generator" type="generate">
         <env name="ROS_NAMESPACE" value="gen" />
         <param name="pkg_name" value="turtles_grpc" />
     </node>
-    <!-- <node name="grpc_server" pkg="grpc_api_generator" type="run_server" /> -->
 </launch>

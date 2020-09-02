@@ -10,4 +10,4 @@ RUN rosdep install --from-paths src --ignore-src -r -y  || echo "There were some
 SHELL ["/bin/bash", "-c"]
 RUN source /opt/ros/noetic/setup.bash && \
     catkin_make
-CMD source devel/setup.bash && roslaunch test turtles_with_grpc_server.launch
+CMD source devel/setup.bash && roslaunch test turtles.launch

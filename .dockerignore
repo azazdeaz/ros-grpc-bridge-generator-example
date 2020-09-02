@@ -3,6 +3,6 @@ build
 devel
 .vscode
 .catkin_tools
-Dockerfile
-run_in_docker
+docker
+turtles_grpc
 README.md

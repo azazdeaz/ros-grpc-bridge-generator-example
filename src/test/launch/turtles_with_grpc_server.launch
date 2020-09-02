@@ -1,4 +1,4 @@
 <launch>
     <include file="$(find test)/launch/turtles.launch" />
-    <include file="$(find turtles_grpc)/launch/grpc_server.launch" />
+    <include file="$(find turtles_grpc)/launch/server.launch" />
 </launch>
