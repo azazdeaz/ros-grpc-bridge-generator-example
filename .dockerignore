@@ -4,5 +4,5 @@ devel
 .vscode
 .catkin_tools
 docker
-turtles_grpc
+src/turtles_grpc
 README.md
