@@ -1,0 +1,3 @@
+[submodule "src/src/grpc_bridge_generator"]
+	path = src/src/grpc_bridge_generator
+	url = https://github.com/azazdeaz/ros-grpc-bridge-generator.git
