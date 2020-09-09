@@ -1,5 +1,6 @@
 # Example ROS workspace for [ros-grpc-bridge-generator](https://github.com/azazdeaz/ros-grpc-bridge-generator)
 
+You can see how a generated package looks like in [src/turtles_grpc](/src/turtles_grpc)
  1. [Download](#Download)
  2. [Run](#Run) or [Run with Docker](#run-with-docker)
  3. [Try out the API](#try-out-the-api)
