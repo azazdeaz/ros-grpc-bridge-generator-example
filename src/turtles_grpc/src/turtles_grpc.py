@@ -205,9 +205,6 @@ class shapes_feedbackServicer(ros_grpc.shapes_feedbackServicer):
         ros_msg.status.goal_id.stamp.secs = pb_msg.status.goal_id.stamp.secs
         ros_msg.status.goal_id.stamp.nsecs = pb_msg.status.goal_id.stamp.nsecs
         ros_msg.status.goal_id.id = pb_msg.status.goal_id.id
-        ros_msg.status.stamp.secs = pb_msg.status.stamp.secs
-        ros_msg.status.stamp.nsecs = pb_msg.status.stamp.nsecs
-        ros_msg.status.id = pb_msg.status.id
         ros_msg.status.status = pb_msg.status.status
         ros_msg.status.text = pb_msg.status.text
 
@@ -240,9 +237,6 @@ class shapes_feedbackServicer(ros_grpc.shapes_feedbackServicer):
                 pb_msg.status.goal_id.stamp.secs = ros_msg.status.goal_id.stamp.secs
                 pb_msg.status.goal_id.stamp.nsecs = ros_msg.status.goal_id.stamp.nsecs
                 pb_msg.status.goal_id.id = ros_msg.status.goal_id.id
-                pb_msg.status.stamp.secs = ros_msg.status.stamp.secs
-                pb_msg.status.stamp.nsecs = ros_msg.status.stamp.nsecs
-                pb_msg.status.id = ros_msg.status.id
                 pb_msg.status.status = ros_msg.status.status
                 pb_msg.status.text = ros_msg.status.text
 
@@ -323,9 +317,6 @@ class shapes_resultServicer(ros_grpc.shapes_resultServicer):
         ros_msg.status.goal_id.stamp.secs = pb_msg.status.goal_id.stamp.secs
         ros_msg.status.goal_id.stamp.nsecs = pb_msg.status.goal_id.stamp.nsecs
         ros_msg.status.goal_id.id = pb_msg.status.goal_id.id
-        ros_msg.status.stamp.secs = pb_msg.status.stamp.secs
-        ros_msg.status.stamp.nsecs = pb_msg.status.stamp.nsecs
-        ros_msg.status.id = pb_msg.status.id
         ros_msg.status.status = pb_msg.status.status
         ros_msg.status.text = pb_msg.status.text
         ros_msg.result.interior_angle = pb_msg.result.interior_angle
@@ -360,9 +351,6 @@ class shapes_resultServicer(ros_grpc.shapes_resultServicer):
                 pb_msg.status.goal_id.stamp.secs = ros_msg.status.goal_id.stamp.secs
                 pb_msg.status.goal_id.stamp.nsecs = ros_msg.status.goal_id.stamp.nsecs
                 pb_msg.status.goal_id.id = ros_msg.status.goal_id.id
-                pb_msg.status.stamp.secs = ros_msg.status.stamp.secs
-                pb_msg.status.stamp.nsecs = ros_msg.status.stamp.nsecs
-                pb_msg.status.id = ros_msg.status.id
                 pb_msg.status.status = ros_msg.status.status
                 pb_msg.status.text = ros_msg.status.text
                 pb_msg.result.interior_angle = ros_msg.result.interior_angle
@@ -391,9 +379,6 @@ class shapes_statusServicer(ros_grpc.shapes_statusServicer):
             ros_msg_.goal_id.stamp.secs = pb_msg_.goal_id.stamp.secs
             ros_msg_.goal_id.stamp.nsecs = pb_msg_.goal_id.stamp.nsecs
             ros_msg_.goal_id.id = pb_msg_.goal_id.id
-            ros_msg_.stamp.secs = pb_msg_.stamp.secs
-            ros_msg_.stamp.nsecs = pb_msg_.stamp.nsecs
-            ros_msg_.id = pb_msg_.id
             ros_msg_.status = pb_msg_.status
             ros_msg_.text = pb_msg_.text
             ros_msg.status_list.append(ros_msg_)
@@ -429,9 +414,6 @@ class shapes_statusServicer(ros_grpc.shapes_statusServicer):
                     pb_msg_.goal_id.stamp.secs = ros_msg_.goal_id.stamp.secs
                     pb_msg_.goal_id.stamp.nsecs = ros_msg_.goal_id.stamp.nsecs
                     pb_msg_.goal_id.id = ros_msg_.goal_id.id
-                    pb_msg_.stamp.secs = ros_msg_.stamp.secs
-                    pb_msg_.stamp.nsecs = ros_msg_.stamp.nsecs
-                    pb_msg_.id = ros_msg_.id
                     pb_msg_.status = ros_msg_.status
                     pb_msg_.text = ros_msg_.text
                     pb_msg.status_list.append(pb_msg_)
@@ -585,6 +567,7 @@ class turtle1_poseServicer(ros_grpc.turtle1_poseServicer):
 class clearServicer(ros_grpc.clearServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('std_srvs/Empty')
+        rospy.wait_for_service('/clear')
         call = rospy.ServiceProxy('/clear', Srv)
         ros_msg = Srv._request_class()
 
@@ -598,8 +581,10 @@ class clearServicer(ros_grpc.clearServicer):
 class killServicer(ros_grpc.killServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('turtlesim/Kill')
+        rospy.wait_for_service('/kill')
         call = rospy.ServiceProxy('/kill', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.name = pb_msg.name
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.turtlesim.KillResponse()
@@ -611,6 +596,7 @@ class killServicer(ros_grpc.killServicer):
 class resetServicer(ros_grpc.resetServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('std_srvs/Empty')
+        rospy.wait_for_service('/reset')
         call = rospy.ServiceProxy('/reset', Srv)
         ros_msg = Srv._request_class()
 
@@ -624,13 +610,9 @@ class resetServicer(ros_grpc.resetServicer):
 class rosout_get_loggersServicer(ros_grpc.rosout_get_loggersServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('roscpp/GetLoggers')
+        rospy.wait_for_service('/rosout/get_loggers')
         call = rospy.ServiceProxy('/rosout/get_loggers', Srv)
         ros_msg = Srv._request_class()
-        for pb_msg_ in pb_msg.loggers:
-            ros_msg_ = roslib.message.get_message_class('roscpp/Logger')()
-            ros_msg_.name = pb_msg_.name
-            ros_msg_.level = pb_msg_.level
-            ros_msg.loggers.append(ros_msg_)
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.roscpp.GetLoggersResponse()
@@ -647,8 +629,11 @@ class rosout_get_loggersServicer(ros_grpc.rosout_get_loggersServicer):
 class rosout_set_logger_levelServicer(ros_grpc.rosout_set_logger_levelServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('roscpp/SetLoggerLevel')
+        rospy.wait_for_service('/rosout/set_logger_level')
         call = rospy.ServiceProxy('/rosout/set_logger_level', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.logger = pb_msg.logger
+        ros_msg.level = pb_msg.level
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.roscpp.SetLoggerLevelResponse()
@@ -660,13 +645,9 @@ class rosout_set_logger_levelServicer(ros_grpc.rosout_set_logger_levelServicer):
 class shapes_get_loggersServicer(ros_grpc.shapes_get_loggersServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('roscpp/GetLoggers')
+        rospy.wait_for_service('/shapes/get_loggers')
         call = rospy.ServiceProxy('/shapes/get_loggers', Srv)
         ros_msg = Srv._request_class()
-        for pb_msg_ in pb_msg.loggers:
-            ros_msg_ = roslib.message.get_message_class('roscpp/Logger')()
-            ros_msg_.name = pb_msg_.name
-            ros_msg_.level = pb_msg_.level
-            ros_msg.loggers.append(ros_msg_)
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.roscpp.GetLoggersResponse()
@@ -683,8 +664,11 @@ class shapes_get_loggersServicer(ros_grpc.shapes_get_loggersServicer):
 class shapes_set_logger_levelServicer(ros_grpc.shapes_set_logger_levelServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('roscpp/SetLoggerLevel')
+        rospy.wait_for_service('/shapes/set_logger_level')
         call = rospy.ServiceProxy('/shapes/set_logger_level', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.logger = pb_msg.logger
+        ros_msg.level = pb_msg.level
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.roscpp.SetLoggerLevelResponse()
@@ -696,13 +680,9 @@ class shapes_set_logger_levelServicer(ros_grpc.shapes_set_logger_levelServicer):
 class sim_get_loggersServicer(ros_grpc.sim_get_loggersServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('roscpp/GetLoggers')
+        rospy.wait_for_service('/sim/get_loggers')
         call = rospy.ServiceProxy('/sim/get_loggers', Srv)
         ros_msg = Srv._request_class()
-        for pb_msg_ in pb_msg.loggers:
-            ros_msg_ = roslib.message.get_message_class('roscpp/Logger')()
-            ros_msg_.name = pb_msg_.name
-            ros_msg_.level = pb_msg_.level
-            ros_msg.loggers.append(ros_msg_)
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.roscpp.GetLoggersResponse()
@@ -719,8 +699,11 @@ class sim_get_loggersServicer(ros_grpc.sim_get_loggersServicer):
 class sim_set_logger_levelServicer(ros_grpc.sim_set_logger_levelServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('roscpp/SetLoggerLevel')
+        rospy.wait_for_service('/sim/set_logger_level')
         call = rospy.ServiceProxy('/sim/set_logger_level', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.logger = pb_msg.logger
+        ros_msg.level = pb_msg.level
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.roscpp.SetLoggerLevelResponse()
@@ -732,8 +715,12 @@ class sim_set_logger_levelServicer(ros_grpc.sim_set_logger_levelServicer):
 class spawnServicer(ros_grpc.spawnServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('turtlesim/Spawn')
+        rospy.wait_for_service('/spawn')
         call = rospy.ServiceProxy('/spawn', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.x = pb_msg.x
+        ros_msg.y = pb_msg.y
+        ros_msg.theta = pb_msg.theta
         ros_msg.name = pb_msg.name
 
         ros_msg = call(ros_msg)
@@ -747,8 +734,14 @@ class spawnServicer(ros_grpc.spawnServicer):
 class turtle1_set_penServicer(ros_grpc.turtle1_set_penServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('turtlesim/SetPen')
+        rospy.wait_for_service('/turtle1/set_pen')
         call = rospy.ServiceProxy('/turtle1/set_pen', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.r = pb_msg.r
+        ros_msg.g = pb_msg.g
+        ros_msg.b = pb_msg.b
+        ros_msg.width = pb_msg.width
+        ros_msg.off = pb_msg.off
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.turtlesim.SetPenResponse()
@@ -760,8 +753,12 @@ class turtle1_set_penServicer(ros_grpc.turtle1_set_penServicer):
 class turtle1_teleport_absoluteServicer(ros_grpc.turtle1_teleport_absoluteServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('turtlesim/TeleportAbsolute')
+        rospy.wait_for_service('/turtle1/teleport_absolute')
         call = rospy.ServiceProxy('/turtle1/teleport_absolute', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.x = pb_msg.x
+        ros_msg.y = pb_msg.y
+        ros_msg.theta = pb_msg.theta
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.turtlesim.TeleportAbsoluteResponse()
@@ -773,8 +770,11 @@ class turtle1_teleport_absoluteServicer(ros_grpc.turtle1_teleport_absoluteServic
 class turtle1_teleport_relativeServicer(ros_grpc.turtle1_teleport_relativeServicer):
     def Call(self, pb_msg, context):
         Srv = roslib.message.get_service_class('turtlesim/TeleportRelative')
+        rospy.wait_for_service('/turtle1/teleport_relative')
         call = rospy.ServiceProxy('/turtle1/teleport_relative', Srv)
         ros_msg = Srv._request_class()
+        ros_msg.linear = pb_msg.linear
+        ros_msg.angular = pb_msg.angular
 
         ros_msg = call(ros_msg)
         pb_msg = ros_pb.turtlesim.TeleportRelativeResponse()
