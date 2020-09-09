@@ -1,12 +1,20 @@
 # Example ROS workspace for [ros-grpc-bridge-generator](https://github.com/azazdeaz/ros-grpc-bridge-generator)
 
-## Run 
-> Tested on Ubuntu 20.04 with ROS Noetic. You can run with [Docker](#Docker) if you have a different setup. 
+ 1. [Download](#Download)
+ 2. [Run](#Run) or [Run with Docker](#run-with-docker)
+ 3. [Try out the API](#try-out-the-api)
 
+## Download
 ```bash
 # clone this repo
 git clone --recurse-submodules https://github.com/azazdeaz/ros-grpc-bridge-generator-example
 cd ros-grpc-bridge-generator-example
+```
+
+## Run 
+> Tested on Ubuntu 20.04 with ROS Noetic. You can run with [Docker](#run-with-docker) if you have a different setup. 
+
+```bash
 
 # build the workspace
 rosdep update
@@ -34,7 +42,7 @@ docker build -t ros-grpc-turtle .
 ```
 
 ```bash
-# run the simulator with docker:
+# Option 1: run the simulator with Docker:
 xhost +
 
 docker run -it \
@@ -45,7 +53,7 @@ docker run -it \
     -p 50051 --name grpc_turtle \
     ros-grpc-turtle
 
-# or run the simulator with rocker:
+# Option 2: run the simulator with Rocker:
 
 # install rocker (this makes it easier to run docker images with GUI)
 pip3 install rocker off-your-rocker
@@ -70,4 +78,6 @@ docker exec -it grpc_turtle bash -c '. devel/setup.bash && roslaunch turtles_grp
 
 ## Try out the API
 
-Now you should see the turtle_sim window and have a running gRPC server in the background. You quickly test the API with a tool like [BloomRPC](https://github.com/uw-labs/bloomrpc). You'll have to set the proto file (<generated pkg>/ros.proto) and the server address (localhost:50051 by default)
+Now you should see the turtle_sim window and have a running gRPC server in the background. You can quickly test the API with a tool like [BloomRPC](https://github.com/uw-labs/bloomrpc). You'll have to set the proto file (<generated pkg>/ros.proto) and the server address (localhost:50051 by default)
+
+ ![](https://github.com/azazdeaz/ros-grpc-bridge-generator/blob/ros/images/demo.gif)
