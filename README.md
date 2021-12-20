@@ -72,7 +72,7 @@ rocker --x11 --nvidia --oyr-run-arg "-p 50051 --name grpc_turtle" ros-grpc-turtl
 docker exec -it grpc_turtle bash -c '. devel/setup.bash && roslaunch test generate_grpc_server.launch && catkin_make'
 
 # run it
-docker exec -it grpc_turtle bash -c '. devel/setup.bash && roslaunch turtles_grpc grpc_server.launch'
+docker exec -it grpc_turtle bash -c '. devel/setup.bash && roslaunch turtles_grpc server.launch'
 
 # and now the grpc server should be running at localhost:50051 ready to operate the turtle ٩(^‿^)۶!
 ```
